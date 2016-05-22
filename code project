@@ -4,102 +4,88 @@
 #include <string.h>
 #include <time.h>
 #include <conio.h>
+
 typedef struct produto{
 	int tempo;
 	int idProd;
 	int preço;
-}ProcessaoProduto;
-
+	
+}PROCESSAOPRODUTO;
  
-typedef struct pessoa{
-	
-	
+typedef struct cliente{
+		
 	int id;
 	char nome[30];
 	
-
-
-}Cliente;
-
+}CLIENTE;
 
 typedef struct atendcompra{
 
-	Cliente *info;
+	CLIENTE *info;
 	int hora_inicio;
-	ProcessaoProduto nprodutos[10];
+	PROCESSAOPRODUTO nprodutos[10];
 	int nprodutoz;
 	int tempototal_Produtos;
 	
+}ATENDECOMPRA;
 
-}Atendecompra;
 typedef struct noatendimentocompra{
 
-	atendcompra *i;
+	ATENDECOMPRA *i;
 	struct noatendimentocompra *prox;
 	struct noatendimentocompra *ant;
 
-}noatendimenotc;
+}NOATENDIMENTOC;
+
 typedef struct caixa{
-	noatendimenotc *inicio;
+
 	int on_off;
-
 	int nelementos;
-	noatendimenotc *Fim;
-
-}Caixa;
+	NOATENDIMENTOC *inicio;
+	NOATENDIMENTOC *Fim;
+	
+}CAIXA;
 
 typedef struct market{
+
 	FILE *OP;
-	Caixa c[7];
+	CAIXA c[7];
 
-}Market;
+}MARKET;
 
-
-Market *inicializarcaixas(){
+MARKET *inicializarcaixas(){
 
 	int i;
-	Market *L;
-	L=(Market *)malloc(sizeof(Market));
+	MARKET *L;
+	L = (MARKET *)malloc(sizeof(MARKET));
 	for(i=0;i<7;i++){
 
 		L->c[i].inicio=NULL;
 		L->c[i].nelementos=0;
 		L->c[i].on_off=0;
-	
-
 	}
-
-
 	
 	return L;
-
-
-
 }
-Atendecompra *Caixas(Cliente *n){
+
+Atendecompra *caixas(CLIENTE *n){
 
 	Atendecompra *L;
 	L=(Atendecompra *)malloc(sizeof(Atendecompra));
-	L->info=n;
-	L->tempototal_Produtos=0;
+	L->info = n;
+	L->tempototal_Produtos = 0;
+	
 	for(int i=0;i<9;i++){
-
 
 		L->nprodutos[i].idProd=rand()% 8;
 		L->nprodutos[i].preço= 1+ rand()% 50;
 		L->nprodutos[i].tempo=1+ rand()% 20;
-		L->tempototal_Produtos=L->tempototal_Produtos + L->nprodutos[i].tempo;
+		L->tempototal_Produtos = L->tempototal_Produtos + L->nprodutos[i].tempo;
 	}
 
-
-
 	return L;
-
-
-
-
-
 }
+
 noatendimentocompra *j(Atendecompra *L){
 	noatendimentocompra *j;
 	j=(noatendimentocompra *)malloc(sizeof(noatendimentocompra));
