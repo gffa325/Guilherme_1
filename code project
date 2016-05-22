@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+#include <time.h>
+#include <conio.h>
+typedef struct produto{
+	int tempo;
+	int idProd;
+	int preço;
+}ProcessaoProduto;
+
+ 
+typedef struct pessoa{
+	
+	
+	int id;
+	char nome[30];
+	
+
+
+}Cliente;
+
+
+typedef struct atendcompra{
+
+	Cliente *info;
+	int hora_inicio;
+	ProcessaoProduto nprodutos[10];
+	int nprodutoz;
+	int tempototal_Produtos;
+	
+
+}Atendecompra;
+typedef struct noatendimentocompra{
+
+	atendcompra *i;
+	struct noatendimentocompra *prox;
+	struct noatendimentocompra *ant;
+
+}noatendimenotc;
+typedef struct caixa{
+	noatendimenotc *inicio;
+	int on_off;
+
+	int nelementos;
+	noatendimenotc *Fim;
+
+}Caixa;
+
+typedef struct market{
+	FILE *OP;
+	Caixa c[7];
+
+}Market;
+
+
+Market *inicializarcaixas(){
