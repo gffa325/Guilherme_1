@@ -56,3 +56,307 @@ typedef struct market{
 
 
 Market *inicializarcaixas(){
+
+	int i;
+	Market *L;
+	L=(Market *)malloc(sizeof(Market));
+	for(i=0;i<7;i++){
+
+		L->c[i].inicio=NULL;
+		L->c[i].nelementos=0;
+		L->c[i].on_off=0;
+	
+
+	}
+
+
+	
+	return L;
+
+
+
+}
+Atendecompra *Caixas(Cliente *n){
+
+	Atendecompra *L;
+	L=(Atendecompra *)malloc(sizeof(Atendecompra));
+	L->info=n;
+	L->tempototal_Produtos=0;
+	for(int i=0;i<9;i++){
+
+
+		L->nprodutos[i].idProd=rand()% 8;
+		L->nprodutos[i].preço= 1+ rand()% 50;
+		L->nprodutos[i].tempo=1+ rand()% 20;
+		L->tempototal_Produtos=L->tempototal_Produtos + L->nprodutos[i].tempo;
+	}
+
+
+
+	return L;
+
+
+
+
+
+}
+noatendimentocompra *j(Atendecompra *L){
+	noatendimentocompra *j;
+	j=(noatendimentocompra *)malloc(sizeof(noatendimentocompra));
+	j->i=L;
+	j->prox=NULL;
+	j->ant=NULL;
+	return j;
+
+
+
+}
+Cliente *pessoa(int n){
+	Cliente *a;char nomes[30];
+	int i;int nu=rand() % 99;
+	
+	
+
+	itoa(nu,nomes,30);
+
+char aux;
+for(i=1;i>=0;i--)
+{
+	aux=nomes[i];
+	nomes[i+1]=aux;
+
+
+
+}
+
+nomes[3]='\0';
+nomes[0]='P';
+printf("\n%s",nomes);
+
+	
+	a=(Cliente *)malloc(sizeof(Cliente));
+	
+	
+	strcpy(a->nome,nomes);
+
+	
+	
+	return a;
+}
+void atenderpessoa(Market *M){
+
+	noatendimenotc *NO;
+	int i=0;
+	while(i<7){
+		if(M->c[i].on_off==1 && M->c[i].nelementos>1){
+		NO=M->c[i].inicio;
+		printf("\nFoi atendida a pessoa com o id : %s na caixa(%d)",NO->i->info->nome,i);
+		printf("\ntempo de atendimento:%d",NO->i->tempototal_Produtos);
+	
+		if(M->c[i].nelementos>1){
+				
+			
+				M->c[i].inicio=M->c[i].inicio->prox;
+				M->c[i].inicio->ant=NULL;
+				//NO->ant=NULL;
+			
+		}
+		else
+			if(M->c[i].nelementos==1){
+				M->c[i].inicio=NULL;
+
+			}
+		i++;
+		M->c[i].nelementos--;
+		free(NO->i->info);
+		free(NO);
+		
+		
+		system("pause");
+		}
+		else
+        i++;
+	}
+
+	
+
+	
+
+}
+
+void inserir(Market *M,noatendimentocompra *l){
+	int i=  rand() % 7;
+	
+	if(M->c[i].inicio==NULL){
+
+		M->c[i].inicio=l;
+		M->c[i].Fim=l;
+		M->c[i].nelementos=1;
+
+	}
+	else{
+
+		M->c[i].Fim->prox=l;
+		l->ant=M->c[i].Fim;
+		M->c[i].Fim=l;
+		M->c[i].nelementos++;
+	}
+	
+	
+	
+
+
+
+
+}
+void mostrar(Market *L){
+	int j=0;int i;
+	
+	while(j!=7){
+		noatendimenotc *no;
+	printf("\ncaixa(%d)",j);
+	no=L->c[j].inicio;
+	while(no!=NULL)
+	{
+
+	
+		printf("\nNome:%s",no->i->info->nome);
+    printf("\nNUmero de produtos:");
+	printf("%d",no->i->nprodutoz);
+	for(i=0;i<no->i->nprodutoz;i++){
+
+		printf("\nPreco:");
+		printf("%d",no->i->nprodutos[i].preço);
+
+
+	}
+
+	no=no->prox;
+	}
+	j++;
+	}
+
+
+}
+
+void fgravar(Market *L){
+	L->OP=fopen("Dados.txt","w");	int i=0;
+	if(!L->OP)
+		return;
+	if(!L)
+		return;
+	else
+		
+		fprintf(L->OP,"Tituto do Programa Docentes, Lda");
+	    fprintf(L->OP,"\nTempoRefrescamento : 2000");
+		fprintf(L->OP,"\n%d",7);
+		while(i!=7){
+			
+			noatendimenotc *no;
+
+			
+	no=L->c[i].inicio;
+	fprintf(L->OP,"\ncaixa(%d) : %d",i,L->c[i].on_off);
+	fprintf(L->OP,"\n%d ",L->c[i].nelementos);
+	while (no)
+	{
+
+	
+		fprintf(L->OP,"\n%s:",no->i->info->nome);
+    
+		fprintf(L->OP,"%d",no->i->nprodutoz);
+	
+
+	no=no->prox;
+	}
+	i++;
+		}
+	fclose(L->OP);
+
+
+
+
+}
+
+int Menu()
+{
+	printf("\n1 -inserir \n"); 
+    printf("2.mostrar	\n");
+    printf("3.mostrar antecedentes\n");
+    printf("5.ON/OF-caixa	\n");
+    printf("5.	\n");
+
+
+	printf("0 - Sair\n");
+
+	int op;
+	printf("Qual a opcao ? ");
+	scanf("%d", &op);
+	return op;
+}
+void ativar(Market *M,int n){
+	if(M->c[n].on_off==0){
+		M->c[n].on_off=1;
+	}
+	else
+		M->c[n].on_off=0;
+
+
+
+
+}
+bool tecla(){
+
+	return kbhit();
+
+}
+void main(){
+	srand(time(NULL));
+	int opc=1000;
+	Market *M;char nome[20];
+	Cliente *P;int i=0;
+	Atendecompra *A;
+	noatendimentocompra *N;
+	int n=0,m;
+	M=inicializarcaixas();
+	do{
+	
+	if(tecla()){
+		opc=Menu();
+	switch(opc){
+		
+	case 1:
+		for(i=0;i<10;i++){
+			n=1+rand()% 9;
+			P=pessoa(n);
+			A=Caixas(P);
+			A->nprodutoz=n;
+			N=j(A);
+		inserir(M,N);
+		}break;
+	case 2:mostrar(M);break;
+	
+	case 5:printf("\nQual a caixa que pretende ativar:");
+		   scanf("\n%d",&m);
+		   ativar(M,m);break;
+		  
+	}
+	
+	}
+	atenderpessoa(M);
+	fgravar(M);
+
+
+	}while(opc!=0);
+
+
+
+
+
+
+
+
+
+
+
+}
